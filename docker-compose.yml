@@ -1,15 +1,15 @@
 version: "3.3"
 
 services:
-  fast-api:
-    build: .
+  fast-api-app:
+    build: ./app/
     environment:
-      DB_USERNAME: 'root'
-      DB_USER_PASSWORD: 'root'
-      DB_HOST: 'mysql'
-      DB_NAME: 'fast_api'
-      SECRET_KEY: 'c99e70f04e8df7e36c6564e5145c0f0f47d157c1b89266821320788ebf4b30c9'
-      SQLITE_DATABASE: 'sqlite:///./test.db'
+      DB_USERNAME: ${DOCKER_DB_USERNAME}
+      DB_USER_PASSWORD: ${DOCKER_DB_USER_PASSWORD}
+      DB_HOST: ${DOCKER_DB_HOST}
+      DB_NAME: ${DB_NAME}
+      SECRET_KEY: ${SECRET_KEY}
+      SQLITE_DATABASE: ${SQLITE_DATABASE}
     ports: 
       - "8000:8000"
     depends_on:
@@ -20,8 +20,8 @@ services:
     build: ./mysql/
     restart: always
     environment:
-      MYSQL_DATABASE: 'fast_api'
-      MYSQL_ROOT_PASSWORD: 'root'
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_ROOT_PASSWORD: ${DOCKER_DB_USER_PASSWORD}
       
     ports:
       - "3307:3306"

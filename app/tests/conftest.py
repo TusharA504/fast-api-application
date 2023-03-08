@@ -2,6 +2,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 from fastapi.testclient import TestClient
 import pytest
+import json
 
 import os
 import sys
@@ -40,3 +41,27 @@ def client():
     client = TestClient(app)
     yield client 
 
+
+@pytest.fixture
+def login(client):
+    client=client
+
+    # creates user
+    data = {"email": "testuser1@test.com", "password": "testuser1"}
+    response = client.post("/user", json.dumps(data))
+
+    # login
+    data = {
+        "username": "testuser1@test.com",
+        "password": "testuser1"
+    }
+    
+    response = client.post("/login/token", data=data)
+    access_token = response.json()["access_token"]
+    return access_token
+
+
+
+
+
+    

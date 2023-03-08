@@ -1,12 +1,9 @@
 import json
 
-def test_create_item(client):
-    data={
-        "username": "testuser1@test.com",
-        "password": "testuser1"
-    }
-    response = client.post("/login/token", data=data)
-    access_token=response.json()["access_token"]
+
+def test_create_item(client,login):
+    
+    access_token=login
     token_header={"Authorization":f"Bearer {access_token}"}
 
     data = {"title": "Gaming Laptop", "description": "HP Pavillion Gaming Laptop"}
@@ -25,13 +22,8 @@ def test_retrieve_item_by_id(client):
     assert response.json()["description"] == "HP Pavillion Gaming Laptop"
 
 
-def test_update_item_by_id(client):
-    data = {
-        "username": "testuser1@test.com",
-        "password": "testuser1"
-    }
-    response = client.post("/login/token", data=data)
-    access_token=response.json()["access_token"]
+def test_update_item_by_id(client,login):
+    access_token=login
     token_header={"Authorization":f"Bearer {access_token}"}
 
     db_items = client.get("/items")
@@ -42,13 +34,9 @@ def test_update_item_by_id(client):
     assert response.json()["Message"] == f"Details Of {id} Successfully Updated"
 
    
-def test_delete_item_by_id(client):
-    data = {
-        "username": "testuser1@test.com",
-        "password": "testuser1"
-    }
-    response = client.post("/login/token", data=data)
-    access_token=response.json()["access_token"]
+def test_delete_item_by_id(client,login):
+
+    access_token=login
     token_header={"Authorization":f"Bearer {access_token}"}
     
     db_items = client.get("/items")
